@@ -1,9 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const jwt = require("jsonwebtoken");
 
 const SECRET_KEY = "supersecretadmin";
 const JWT_SECRET = "your_jet_secret";
+
+// Enable CORS for all domains
+app.use(cors());
 
 app.use(express.json());
 
@@ -19,7 +23,7 @@ const verifyJWT = (req, res, next) => {
     req.user = decodedToken;
     next();
   } catch (error) {
-    return res.status(402).json({ message: "Invalif Token" });
+    return res.status(402).json({ message: "Invalid Token" });
   }
 };
 
@@ -34,8 +38,8 @@ app.post("/admin/login", (req, res) => {
   }
 });
 
-app.get("/admin/api/data", verifyJWT, (rreq, res) => {
+app.get("/admin/api/data", verifyJWT, (req, res) => {
   res.json({ message: "Protected route accessible." });
 });
 
-app.listen(3000, () => console.log("Server is running on 3000."));
+app.listen(3001, () => console.log("Server is running on 3001."));
